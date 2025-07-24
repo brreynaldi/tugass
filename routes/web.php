@@ -57,6 +57,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/kelas/{id}/tambah-siswa', [KelasController::class, 'tambahSiswa'])->name('kelas.tambahSiswa');
     Route::post('/kelas/{id}/hapus-siswa', [KelasController::class, 'hapusSiswa'])->name('kelas.hapusSiswa');
 
+    Route::middleware(['auth'])->group(function () {
+    Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
+    Route::get('/kelas/{id}/edit', [KelasController::class, 'edit'])->name('kelas.edit');
+    Route::put('/kelas/{id}', [KelasController::class, 'update'])->name('kelas.update');
+    Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+    });
+
+
     // Quiz dan Soal
     Route::resource('quiz', QuizController::class);
     Route::get('quiz/{quiz}/soal', [QuizSoalController::class, 'index'])->name('quiz.soal.index');
@@ -119,6 +127,7 @@ Route::middleware(['auth'])->group(function () {
                 'siswa' => redirect()->route('dashboard.siswa'),
                 'guru' => redirect()->route('dashboard.guru'),
                 'wali' => redirect()->route('dashboard.wali'),
+                'admin' => redirect()->route('dashboard'),
                 default => abort(403),
             };
         });

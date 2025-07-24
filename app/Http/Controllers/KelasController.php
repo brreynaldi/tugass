@@ -46,26 +46,35 @@ class KelasController extends Controller
         return view('kelas.show', compact('kelas', 'anggota', 'semua_siswa'));
     }
 
-    public function edit(Kelas $kelas)
+    public function edit($id)
     {
-        return view('kelas.edit', compact('kelas'));
+        $kelas = Kelas::findOrFail($id);
+        $guru = User::where('role', 'guru')->get(); // Ambil semua guru untuk dropdown
+        return view('kelas.edit', compact('kelas', 'guru'));
     }
 
-    public function update(Request $request, Kelas $kelas)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'nama' => 'required|string|max:100'
+            'nama' => 'required|string|max:255',
+            'guru_id' => 'required|exists:users,id',
         ]);
 
-        $kelas->update($request->only('nama'));
+        $kelas = Kelas::findOrFail($id);
+        $kelas->nama = $request->nama;
+        $kelas->guru_id = $request->guru_id;
+        $kelas->save();
 
         return redirect()->route('kelas.index')->with('success', 'Kelas berhasil diperbarui.');
     }
 
-    public function destroy(Kelas $kelas)
+
+    public function destroy($id)
     {
+        $kelas = Kelas::findOrFail($id);
         $kelas->delete();
-        return back()->with('success', 'Kelas berhasil dihapus.');
+
+        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dihapus.');
     }
 
     public function tambahSiswa(Request $request, $id)

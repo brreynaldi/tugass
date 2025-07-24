@@ -20,6 +20,7 @@
                     @csrf @method('DELETE')
                     <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus kelas ini?')">Hapus</button>
                 </form>
+               
             </td>
         </tr>
         @endforeach

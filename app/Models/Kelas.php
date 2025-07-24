@@ -10,7 +10,7 @@ class Kelas extends Model
     use HasFactory;
     protected $fillable = ['nama', 'guru_id'];
 
-
+    
     public function users()
     {
         return $this->belongsToMany(User::class, 'kelas_user');
