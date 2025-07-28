@@ -2,6 +2,12 @@
 
 @section('content')
 <div class="container">
+    <div>
+        <button onclick="history.back()" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</button>
+    </div>
+    <br/>
     <h3>{{ $tugas->judul }}</h3>
     <p><strong>Deskripsi:</strong> {{ $tugas->deskripsi }}</p>
    <p><strong>Kelas:</strong> {{ optional($tugas->kelas)->nama ?? '-' }}</p>

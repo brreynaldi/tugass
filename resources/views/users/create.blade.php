@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <h3>Tambah Pengguna</h3>
+<div>
+        <button onclick="history.back()" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</button>
+    </div>
+    <br/>
 <form action="{{ route('users.store') }}" method="POST">
     @csrf
     <div class="mb-3">

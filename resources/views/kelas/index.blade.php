@@ -1,7 +1,15 @@
 @extends('layouts.app')
 @section('content')
 <h3>Daftar Kelas</h3>
+<div>
+        <button onclick="history.back()" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</button>
+    </div>
+    <br/>
+     @if(Auth::user()->role == 'guru')
 <a href="{{ route('kelas.create') }}" class="btn btn-primary mb-3">+ Tambah Kelas</a>
+@endif
 <table class="table table-bordered">
     <thead>
         <tr>

@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <h3>Daftar Pengguna</h3>
+<div>
+        <button onclick="history.back()" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</button>
+    </div>
+    <br/>
 <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">+ Tambah Pengguna</a>
 <table class="table table-bordered">
     <thead>

@@ -2,6 +2,12 @@
 
 @section('content')
 <h3>Edit Pengguna</h3>
+<div>
+       <button onclick="history.back()" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</button>
+    </div>
+    <br/>
 <form action="{{ route('users.update', $user->id) }}" method="POST">
     @csrf @method('PUT')
     <div class="mb-3">

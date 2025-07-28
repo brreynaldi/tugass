@@ -3,6 +3,10 @@
 @section('content')
 <div class="container">
     <h4>Tugas Anak: {{ $anak->name }}</h4>
+    <div>
+        <a href="{{ url()->previous() }}" class="btn btn-secondary">← Kembali</a>
+    </div>
+    <br/>
     <table class="table table-bordered">
         <thead>
             <tr>

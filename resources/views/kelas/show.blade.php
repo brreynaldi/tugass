@@ -1,7 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <h3>Detail Kelas: {{ $kelas->nama }}</h3>
-
+<div>
+        <button onclick="history.back()" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</button>
+    </div>
+    <br/>
 <h5>Daftar Siswa:</h5>
 <table class="table table-bordered">
     <thead>

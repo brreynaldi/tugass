@@ -2,6 +2,12 @@
 
 @section('content')
 <div class="container">
+    <div>
+        <button onclick="history.back()" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</button>
+    </div>
+    <br/>
     <h3>Tambah Kelas</h3>
 
     @if ($errors->any())

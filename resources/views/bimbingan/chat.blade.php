@@ -2,6 +2,12 @@
 
 @section('content')
 <div class="container">
+    <div>
+        <button onclick="history.back()" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</button>
+    </div>
+    <br/>
     <h4>Chat Bimbingan</h4>
     <div class="card">
         <div class="card-body">

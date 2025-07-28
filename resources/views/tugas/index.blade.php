@@ -2,6 +2,12 @@
 
 @section('content')
 <div class="container">
+    <div>
+        <button onclick="history.back()" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</button>
+    </div>
+    <br/>
     <h4>Daftar Tugas</h4>
 
     @if(session('success'))
@@ -13,7 +19,7 @@
         <a href="{{ route('tugas.export.semua') }}" class="btn btn-success mb-3">📤 Export Semua Nilai</a>
 
     @endif
-    
+    <a href="{{ url()->previous() }}" class="btn btn-secondary">← Kembali</a>
     <table class="table table-bordered">
         <thead>
             <tr>
