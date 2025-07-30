@@ -117,22 +117,50 @@ class BimbinganController extends Controller {
     return back();
 }
 
-public function terima($id)
-{
-    $bimbingan = Bimbingan::findOrFail($id);
-    if (auth()->id() != $bimbingan->guru_id) abort(403);
-
-    $bimbingan->update(['status' => 'diterima']);
-    return back()->with('success', 'Bimbingan diterima.');
-}
-
 public function tolak($id)
 {
     $bimbingan = Bimbingan::findOrFail($id);
-    if (auth()->id() != $bimbingan->guru_id) abort(403);
 
-    $bimbingan->update(['status' => 'ditolak']);
+    if (auth()->id() != $bimbingan->guru_id) {
+        abort(403);
+    }
+
+    // Update status
+    $bimbingan->status = 'ditolak';
+    $bimbingan->save();
+
+    // Kirim notifikasi
+    if ($bimbingan->wali) {
+        $bimbingan->wali->notify(new ResponBimbinganDariGuru($bimbingan, 'ditolak'));
+    }
+    if ($bimbingan->siswa) {
+        $bimbingan->siswa->notify(new ResponBimbinganDariGuru($bimbingan, 'ditolak'));
+    }
+
     return back()->with('success', 'Bimbingan ditolak.');
+}
+
+
+public function terima($id)
+{
+    $bimbingan = Bimbingan::findOrFail($id);
+
+    if (auth()->user()->id !== $bimbingan->guru_id) {
+        abort(403, 'Anda tidak berhak menerima bimbingan ini');
+    }
+
+    $bimbingan->status = 'disetujui';
+    $bimbingan->save();
+
+    // Kirim notifikasi ke wali dan siswa jika ada
+    if ($bimbingan->wali) {
+        $bimbingan->wali->notify(new ResponBimbinganDariGuru($bimbingan, 'disetujui'));
+    }
+    if ($bimbingan->siswa) {
+        $bimbingan->siswa->notify(new ResponBimbinganDariGuru($bimbingan, 'disetujui'));
+    }
+
+    return back()->with('success', 'Bimbingan berhasil diterima.');
 }
 
 public function chat($id)

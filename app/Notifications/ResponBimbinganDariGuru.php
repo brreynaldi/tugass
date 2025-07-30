@@ -3,61 +3,36 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class ResponBimbinganDariGuru extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    protected $bimbingan;
+    protected $status;
+
+    public function __construct($bimbingan, $status)
     {
-        //
+        // Pastikan relasi guru sudah dimuat
+        $bimbingan->loadMissing('guru');
+        $this->bimbingan = $bimbingan;
+        $this->status = $status;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
     public function via(object $notifiable): array
     {
         return ['database'];
     }
-    public function toDatabase($notifiable)
-    {
-        return [
-            'title' => 'Respon Bimbingan',
-            'body' => 'Guru telah ' . $this->bimbingan->status . ' permintaan bimbingan.',
-            'url' => route('bimbingan.index'),
-            'pesan' => "{$this->pengirim->name} mengirim respon bimbinganbaru.",
-        ];
-    }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(object $notifiable): array
     {
+        $guruName = $this->bimbingan->guru->name ?? 'Guru';
+
         return [
-            //
+            'title' => 'Respon Bimbingan',
+            'pesan' => $guruName.' telah '.$this->status.' permintaan bimbingan.',
+            'url' => route('bimbingan.chat', $this->bimbingan->id),
         ];
     }
 }

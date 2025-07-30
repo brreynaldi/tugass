@@ -16,6 +16,27 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
+        .notification-item {
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .notification-item:hover {
+        background-color: #e6f3ff;
+    }
+
+    .dropdown-menu::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .dropdown-menu::-webkit-scrollbar-thumb {
+        background-color: #bbb;
+        border-radius: 10px;
+    }
+
+    .dropdown-menu::-webkit-scrollbar-thumb:hover {
+        background-color: #888;
+    }
         .nav-link.active {
             background-color: #0d6efd;
             color: #fff !important;
@@ -35,6 +56,14 @@
             font-size: 14px;
             color: #333;
         }
+        .notification-message {
+    font-size: 14px;
+    color: #333;
+    white-space: normal;        /* agar text bisa turun baris */
+    word-wrap: break-word;      /* pecah kata panjang */
+    overflow-wrap: break-word;  /* kompatibilitas tambahan */
+    max-width: 100%;
+}
     </style>
 </head>
 @stack('scripts')
@@ -98,7 +127,9 @@
                                  
                                         <div class="dropdown-item d-flex flex-column mb-2 rounded bg-light p-2 small">
                                             <strong class="text-dark mb-1">🔔 Notifikasi</strong>
-                                            <span class="text-muted">{{ $notification->data['pesan'] ?? 'Pesan tidak tersedia' }}</span>
+                                            <span class="notification-message">
+                                                {{ $notification->data['pesan'] ?? 'Pesan tidak tersedia' }}
+                                            </span>
                                             <small class="text-secondary mt-1">{{ $notification->created_at->diffForHumans() }}</small>
                                         </div>
                                     @empty
