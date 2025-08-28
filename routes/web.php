@@ -31,46 +31,46 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Forum (bisa digunakan oleh semua user login)
+    // Forum (semua user login)
     Route::post('/tugas/{id}/forum', [ForumController::class, 'store'])->name('forum.store');
 
-    // Export nilai (bisa diakses admin/guru)
+    // Export nilai (admin/guru saja yang pakai logic di controller)
     Route::get('/tugas/{id}/export-nilai', [TugasController::class, 'exportNilai'])->name('tugas.export');
     Route::get('/export-nilai', [ExportController::class, 'exportSemuaNilai'])->name('tugas.export.semua');
 
     // Notifikasi umum
-    Route::get('/notifikasi/baca', function () {
-        auth()->user()->unreadNotifications->markAsRead();
-        return back();
-    })->name('notifikasi.baca');
-    Route::post('/notifikasi/baca', function () {
+    Route::match(['get','post'], '/notifikasi/baca', function () {
         auth()->user()->unreadNotifications->markAsRead();
         return back();
     })->name('notifikasi.baca');
 
-    // Bimbingan (bisa semua user login, sesuai controller)
+    // Bimbingan (semua user login)
     Route::prefix('bimbingan')->group(function () {
         Route::get('/', [BimbinganController::class, 'index'])->name('bimbingan.index');
         Route::get('/create', [BimbinganController::class, 'create'])->name('bimbingan.create');
         Route::post('/', [BimbinganController::class, 'store'])->name('bimbingan.store');
         Route::post('/{id}/respon', [BimbinganController::class,'respon'])->name('bimbingan.respon');
         Route::post('/{id}/selesai',[BimbinganController::class, 'selesai'])->name('bimbingan.selesai');
-        Route::post('/{id}/chat',[BimbinganController::class, 'chatStore'])->name('bimbingan.chat');
         Route::post('/{id}/terima', [BimbinganController::class, 'terima'])->name('bimbingan.terima');
         Route::post('/{id}/tolak', [BimbinganController::class, 'tolak'])->name('bimbingan.tolak');
         Route::get('/{id}/chat', [BimbinganController::class, 'chat'])->name('bimbingan.chat');
         Route::post('/{id}/chat', [BimbinganController::class, 'kirimChat'])->name('bimbingan.kirimChat');
     });
+
+    // Semua role bisa lihat daftar tugas sesuai role-nya
+    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
+});
+
+Route::middleware(['auth', 'role:siswa'])->group(function () {
+    Route::get('/siswa/tugas/{id}', [TugasController::class, 'show'])
+        ->name('siswa.tugas.show');
 });
 
 /*----------------------------------------------------------
 | ADMIN ROUTES
 ----------------------------------------------------------*/
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    // Manajemen Users
     Route::resource('users', UserController::class);
-
-    // Manajemen Kelas
     Route::resource('kelas', KelasController::class);
     Route::post('/kelas/{id}/tambah-siswa', [KelasController::class, 'tambahSiswa'])->name('kelas.tambahSiswa');
     Route::post('/kelas/{id}/hapus-siswa', [KelasController::class, 'hapusSiswa'])->name('kelas.hapusSiswa');
@@ -82,19 +82,18 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 Route::middleware(['auth', 'role:guru'])->prefix('guru')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.guru');
 
-    // Tugas (full resource hanya untuk guru)
-    Route::resource('tugas', TugasController::class);
+    // CRUD Tugas (hanya guru)
+    Route::resource('tugas', TugasController::class)->except(['index']);
     Route::post('/tugas/{id}/jawaban', [TugasController::class, 'storeJawaban'])->name('tugas.jawab');
     Route::get('/tugas/jawaban/{id}/nilai', [TugasController::class, 'nilaiForm'])->name('tugas.nilai.form');
     Route::post('/tugas/jawaban/{id}/nilai', [TugasController::class, 'nilaiSimpan'])->name('tugas.nilai.simpan');
-    // Kelas 
 
-       Route::resource('kelas', KelasController::class);
+    // Kelas
+    Route::resource('kelas', KelasController::class);
     Route::post('/kelas/{id}/tambah-siswa', [KelasController::class, 'tambahSiswa'])->name('kelas.tambahSiswa');
     Route::post('/kelas/{id}/hapus-siswa', [KelasController::class, 'hapusSiswa'])->name('kelas.hapusSiswa');
 
-    
-    // Quiz & Soal
+    // Quiz
     Route::resource('quiz', QuizController::class);
     Route::get('quiz/{quiz}/soal', [QuizSoalController::class, 'index'])->name('quiz.soal.index');
     Route::get('quiz/{quiz}/soal/create', [QuizSoalController::class, 'create'])->name('quiz.soal.create');

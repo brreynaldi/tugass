@@ -33,8 +33,11 @@
                     <td>{{ $item->judul }}</td>
                     <td>{{ $item->kelas->nama ?? '-' }}</td>
                     <td>
-                        <a href="{{ route('tugas.show', $item->id) }}" class="btn btn-sm btn-info">Lihat</a>
-                        
+                        @if(Auth::user()->role == 'guru')
+                            <a href="{{ route('tugas.show', $item->id) }}" class="btn btn-sm btn-info">Lihat</a>
+                        @elseif(Auth::user()->role == 'siswa')
+                            <a href="{{ route('siswa.tugas.show', $item->id) }}" class="btn btn-sm btn-info">Lihat</a>
+                        @endif
                     </td>
                 </tr>
             @endforeach
