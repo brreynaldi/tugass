@@ -21,14 +21,19 @@
         @foreach($kelas as $k)
         <tr>
             <td>{{ $k->nama }}</td>
-            <td>
+           <td>
+                {{-- Tombol detail selalu bisa diakses semua role --}}
                 <a href="{{ route('kelas.show', $k->id) }}" class="btn btn-sm btn-info">Detail</a>
-                <a href="{{ route('kelas.edit', $k->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                <form action="{{ route('kelas.destroy', $k->id) }}" method="POST" style="display:inline-block">
-                    @csrf @method('DELETE')
-                    <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus kelas ini?')">Hapus</button>
-                </form>
-               
+
+                {{-- Tombol edit dan hapus hanya bisa diakses role guru & admin --}}
+                @if(auth()->user()->role === 'guru' || auth()->user()->role === 'admin')
+                    <a href="{{ route('kelas.edit', $k->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="{{ route('kelas.destroy', $k->id) }}" method="POST" style="display:inline-block">
+                        @csrf 
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus kelas ini?')">Hapus</button>
+                    </form>
+                @endif
             </td>
         </tr>
         @endforeach

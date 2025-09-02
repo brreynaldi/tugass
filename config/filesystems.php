@@ -12,7 +12,12 @@ return [
     | based disks are available to your application. Just store away!
     |
     */
-
+    'public' => [
+    'driver' => 'local',
+    'root' => storage_path('app/public'),
+    'url' => env('APP_URL').'/storage',
+    'visibility' => 'public',
+    ],
     'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*

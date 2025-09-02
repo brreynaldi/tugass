@@ -40,8 +40,14 @@ class KelasController extends Controller
     public function show($id)
     {
         $kelas = Kelas::findOrFail($id);
+
+        // siswa yang sudah tergabung
         $anggota = $kelas->users()->get();
-        $semua_siswa = User::where('role', 'siswa')->get();
+
+        // ambil semua siswa, kecuali yang sudah jadi anggota
+        $semua_siswa = User::where('role', 'siswa')
+            ->whereNotIn('id', $anggota->pluck('id')) // exclude siswa yang sudah ada
+            ->get();
 
         return view('kelas.show', compact('kelas', 'anggota', 'semua_siswa'));
     }
@@ -77,18 +83,19 @@ class KelasController extends Controller
         return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dihapus.');
     }
 
-    public function tambahSiswa(Request $request, $id)
+    public function tambahSiswa(Request $request, $kelasId)
     {
-        $kelas = Kelas::findOrFail($id);
+        $kelas = Kelas::findOrFail($kelasId);
 
-        $request->validate([
-            'user_id' => 'required|exists:users,id'
-        ]);
+        // pastikan request membawa array user_id
+        $siswaIds = $request->input('user_id', []);
 
-        $kelas->users()->syncWithoutDetaching([$request->user_id]);
+        // attach banyak siswa sekaligus
+        $kelas->siswa()->attach($siswaIds);
 
-        return back()->with('success', 'Siswa berhasil ditambahkan ke kelas.');
+        return redirect()->route('kelas.show', $kelasId)->with('success', 'Siswa berhasil ditambahkan');
     }
+
 
     public function hapusSiswa(Request $request, $id)
     {
@@ -96,5 +103,16 @@ class KelasController extends Controller
         $kelas->users()->detach($request->user_id);
 
         return back()->with('success', 'Siswa berhasil dihapus dari kelas.');
+    }
+    public function hapusSiswaBatch(Request $request, $id)
+    {
+        $request->validate([
+            'user_ids' => 'required|array'
+        ]);
+
+        $kelas = Kelas::findOrFail($id);
+        $kelas->users()->detach($request->user_ids);
+
+        return back()->with('success', 'Siswa terpilih berhasil dihapus dari kelas.');
     }
 }

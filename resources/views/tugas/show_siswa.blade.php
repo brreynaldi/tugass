@@ -19,7 +19,10 @@
     <h5>Jawaban Anda</h5>
 
     @if($jawaban)
-        <p>File: <a href="{{ asset('storage/'.$jawaban->jawaban) }}" target="_blank">Lihat</a>
+       <p>File: <a href="{{ asset('storage/'.$jawaban->jawaban) }}" target="_blank">Lihat</a></p>
+<p><img src="{{ asset('storage/'.$jawaban->jawaban) }}" alt="Preview" style="max-width:200px"></p>
+
+
         <p>Nilai: {{ $jawaban->nilai ?? '-' }}</p>
     @else
     

@@ -80,7 +80,14 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        // hapus relasi sebelum hapus user
+        $user->kelas()->delete();
+        $user->tugas()->delete();
+        $user->bimbingan()->delete();
+        $user->bimbinganChats()->delete();
+
         $user->delete();
-        return back()->with('success', 'User berhasil dihapus.');
+
+        return back()->with('success', 'User dan semua data terkait berhasil dihapus.');
     }
 }

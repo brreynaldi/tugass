@@ -52,15 +52,27 @@ class User extends Authenticatable
     {
         return $this->hasMany(Kelas::class, 'guru_id');
     }
-
+    public function tugas()
+    {
+        return $this->hasMany(Tugas::class, 'kelas_id');
+    }
     // Untuk siswa
     public function kelas()
     {
         return $this->belongsToMany(Kelas::class, 'kelas_user', 'user_id', 'kelas_id');
     }
+    public function bimbingan()
+    {
+        return $this->hasMany(Bimbingan::class, 'wali_id','siswa_id');
+    }
     public function wali()
     {
         return $this->belongsTo(User::class, 'wali_id');
+    }
+    
+    public function bimbinganChats()
+    {
+        return $this->hasMany(BimbinganChat::class, 'sender_id');
     }
 
     // Wali memiliki banyak siswa

@@ -180,8 +180,7 @@ public function selesai($id)
     $bimbingan = Bimbingan::findOrFail($id);
     $bimbingan->status = 'selesai';
     $bimbingan->save();
-
-    return redirect()->back()->with('success', 'Bimbingan selesai.');
+    return redirect()->route('bimbingan.index')->with('success', 'Bimbingan selesai.');
 }
 
 public function kirimChat(Request $request, $id)

@@ -35,6 +35,11 @@
                     <td>
                         @if(Auth::user()->role == 'guru')
                             <a href="{{ route('tugas.show', $item->id) }}" class="btn btn-sm btn-info">Lihat</a>
+                            <form action="{{ route('tugas.destroy', $item->id) }}" method="POST" style="display:inline-block">
+                                @csrf 
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus Tugas Ini?')">Hapus</button>
+                            </form>
                         @elseif(Auth::user()->role == 'siswa')
                             <a href="{{ route('siswa.tugas.show', $item->id) }}" class="btn btn-sm btn-info">Lihat</a>
                         @endif

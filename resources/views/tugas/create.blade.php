@@ -32,7 +32,7 @@
 
         <div class="mb-3">
             <label>Deskripsi</label>
-            <textarea name="deskripsi" class="form-control"></textarea>
+            <textarea name="deskripsi" class="form-control" required></textarea>
         </div>
         <div class="mb-3">
             <label>Tanggal Deadline</label>

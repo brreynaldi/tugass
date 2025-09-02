@@ -55,7 +55,7 @@ class TugasController extends Controller
         'judul' => 'required|string',
         'kelas_id' => 'required|exists:kelas,id',
         'deskripsi' => 'nullable|string',
-        'file' => 'nullable|file|mimes:pdf,docx,zip',
+        'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,csv,ppt,pptx,zip,rar,jpg,jpeg,png,gif,bmp,svg,webp,mp4,mkv,avi,mov,mp3,wav,ogg',
         'tanggal_deadline' => 'required|date'
     ]);
 
@@ -111,7 +111,7 @@ class TugasController extends Controller
     public function storeJawaban(Request $request, $tugas_id)
     {
         $request->validate([
-            'jawaban' => 'required|file|mimes:pdf,docx,zip'
+            'jawaban' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,csv,ppt,pptx,zip,rar,jpg,jpeg,png,gif,bmp,svg,webp,mp4,mkv,avi,mov,mp3,wav,ogg'
         ]);
 
         $filePath = $request->file('jawaban')->store('jawaban', 'public');
@@ -174,6 +174,14 @@ class TugasController extends Controller
     public function exportNilai($tugas_id)
     {
         return Excel::download(new NilaiExport($tugas_id), 'nilai_tugas.xlsx');
+    }
+
+    public function destroy($id)
+    {
+        $tugas = Tugas::findOrFail($id);
+        $tugas->delete();
+
+        return redirect()->route('tugas.index')->with('success', 'Tugas berhasil dihapus.');
     }
 
 }

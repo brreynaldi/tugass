@@ -44,6 +44,10 @@ Route::middleware(['auth'])->group(function () {
         return back();
     })->name('notifikasi.baca');
 
+Route::resource('kelas', KelasController::class);
+Route::post('/kelas/{id}/tambah-siswa', [KelasController::class, 'tambahSiswa'])->name('kelas.tambahSiswa');
+    Route::post('/kelas/{id}/hapus-siswa', [KelasController::class, 'hapusSiswa'])->name('kelas.hapusSiswa');
+
     // Bimbingan (semua user login)
     Route::prefix('bimbingan')->group(function () {
         Route::get('/', [BimbinganController::class, 'index'])->name('bimbingan.index');
@@ -66,15 +70,15 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
         ->name('siswa.tugas.show');
 });
 
+
+
 /*----------------------------------------------------------
 | ADMIN ROUTES
 ----------------------------------------------------------*/
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::resource('users', UserController::class);
-    Route::resource('kelas', KelasController::class);
-    Route::post('/kelas/{id}/tambah-siswa', [KelasController::class, 'tambahSiswa'])->name('kelas.tambahSiswa');
-    Route::post('/kelas/{id}/hapus-siswa', [KelasController::class, 'hapusSiswa'])->name('kelas.hapusSiswa');
-});
+   });
+Route::post('/kelas/{id}/hapus-siswa-batch', [KelasController::class, 'hapusSiswaBatch'])->name('kelas.hapusSiswaBatch');
 
 /*----------------------------------------------------------
 | GURU ROUTES
@@ -89,10 +93,7 @@ Route::middleware(['auth', 'role:guru'])->prefix('guru')->group(function () {
     Route::post('/tugas/jawaban/{id}/nilai', [TugasController::class, 'nilaiSimpan'])->name('tugas.nilai.simpan');
 
     // Kelas
-    Route::resource('kelas', KelasController::class);
-    Route::post('/kelas/{id}/tambah-siswa', [KelasController::class, 'tambahSiswa'])->name('kelas.tambahSiswa');
-    Route::post('/kelas/{id}/hapus-siswa', [KelasController::class, 'hapusSiswa'])->name('kelas.hapusSiswa');
-
+    
     // Quiz
     Route::resource('quiz', QuizController::class);
     Route::get('quiz/{quiz}/soal', [QuizSoalController::class, 'index'])->name('quiz.soal.index');
@@ -110,7 +111,7 @@ Route::middleware(['auth', 'role:siswa'])->prefix('siswa')->group(function () {
     // Kerjakan Quiz
     Route::get('quiz/{quiz}/kerjakan', [QuizJawabanController::class, 'kerjakan'])->name('quiz.kerjakan');
     Route::post('quiz/{quiz}/kerjakan', [QuizJawabanController::class, 'simpanJawaban'])->name('quiz.simpan');
-
+   
     // Jawab tugas
     Route::post('/tugas/{id}/jawaban', [TugasController::class, 'storeJawaban'])->name('tugas.jawab');
 });
