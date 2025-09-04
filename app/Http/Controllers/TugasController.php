@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\SiswaSubmitTugas;
+use App\Notifications\NilaiTugasDiberikan;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\NilaiExport;
 use App\Notifications\GuruBuatTugas;
@@ -159,14 +160,14 @@ class TugasController extends Controller
             $tugas = $jawaban->tugas;
 
             // Kirim ke siswa
-            // // if ($siswa) {
-            // //     $siswa->notify(new NilaiTugasDiberikan($tugas, $request->nilai));
-            // // }
+            if ($siswa) {
+                $siswa->notify(new NilaiTugasDiberikan($tugas, $request->nilai));
+            }
 
             // // Kirim ke wali
-            // if ($siswa && $siswa->wali) {
-            //     $siswa->wali->notify(new NilaiTugasDiberikan($tugas, $request->nilai));
-            // }
+            if ($siswa && $siswa->wali) {
+                $siswa->wali->notify(new NilaiTugasDiberikan($tugas, $request->nilai));
+            }
 
             return redirect()->route('tugas.show', $tugas->id)->with('success', 'Nilai berhasil disimpan.');
         }
