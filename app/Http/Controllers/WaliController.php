@@ -27,13 +27,21 @@ class WaliController extends Controller
     {
         $anak = User::findOrFail($id);
 
+        // Pastikan hanya wali dari anak tsb yang bisa akses
         if ($anak->wali_id != Auth::id()) {
             abort(403, 'Tidak diizinkan.');
         }
 
-        $jawaban = TugasJawaban::where('siswa_id', $anak->id)->with('tugas')->get();
+        // Ambil semua kelas anak
+        $kelasAnak = $anak->kelas()->pluck('kelas_id');
 
-        return view('wali.tugas', compact('anak', 'jawaban'));
+        // Ambil semua tugas dari kelas yang diikuti anak
+        $tugas = \App\Models\Tugas::whereIn('kelas_id', $kelasAnak)->get();
+
+        // Ambil jawaban anak untuk tugas-tugas tersebut
+        $jawaban = \App\Models\TugasJawaban::where('siswa_id', $anak->id)->get()->keyBy('tugas_id');
+
+        return view('wali.tugas', compact('anak', 'tugas', 'jawaban'));
     }
 
     // Quiz anak

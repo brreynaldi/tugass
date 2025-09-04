@@ -8,9 +8,13 @@
 </button>
     </div>
     <br/>
-    <h4>{{ $tugas->judul }}</h4>
+    <div>
+        <h4> Nama Tugas : {{ $tugas->judul }}</h4> 
+        <br/>
+        <h5> Keterangan Tugas :{{ $tugas->deskripsi }} </h5>
+        <h5> Tanggal Pengumpulan Tugas Terakhir : {{ \Carbon\Carbon::parse($tugas->tanggal_deadline)->format('d F Y') }}</h5>
+    </div>
 
-    <p>{{ $tugas->deskripsi }}</p>
     @if($tugas->file)
         <a href="{{ asset('storage/'.$tugas->file) }}" target="_blank" class="btn btn-sm btn-secondary">Unduh File</a>
     @endif
@@ -18,23 +22,25 @@
     <hr>
     <h5>Jawaban Anda</h5>
 
-    @if($jawaban)
-       <p>File: <a href="{{ asset('storage/'.$jawaban->jawaban) }}" target="_blank">Lihat</a></p>
-<p><img src="{{ asset('storage/'.$jawaban->jawaban) }}" alt="Preview" style="max-width:200px"></p>
-
-
-        <p>Nilai: {{ $jawaban->nilai ?? '-' }}</p>
+     @if($jawaban)
+     <a href="{{ asset('storage/'.$jawaban->jawaban) }}" target="_blank" class="btn btn-sm btn-secondary">Lihat Jawaban</a>
+    <p>Nilai: {{ $jawaban->nilai ?? '-' }}</p>
     @else
-    
-       <form action="{{ route('tugas.jawab', $tugas->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-
-            <div class="mb-3">
-                <label>Upload Jawaban</label>
-                <input type="file" name="jawaban" class="form-control" required>
+        {{-- Cek apakah sudah lewat deadline --}}
+        @if(\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($tugas->tanggal_deadline)))
+            <div class="alert alert-warning">
+                ⚠️ Anda tidak dapat mengirim jawaban dikarenakan sudah melewati tanggal pengumpulan.
             </div>
-            <button type="submit" class="btn btn-primary">Kirim Jawaban</button>
-        </form>
+        @else
+            <form action="{{ route('tugas.jawab', $tugas->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-3">
+                    <label>Upload Jawaban</label>
+                    <input type="file" name="jawaban" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Kirim Jawaban</button>
+            </form>
+        @endif
     @endif
     <hr>
 <h5>💬 Forum Diskusi</h5>
