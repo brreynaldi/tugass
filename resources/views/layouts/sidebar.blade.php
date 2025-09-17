@@ -1,7 +1,7 @@
 @auth
 <div class="d-flex flex-column p-2 bg-light h-100">
     <a href="{{ route('dashboard') }}" class="d-flex align-items-center mb-3 text-dark text-decoration-none">
-        <span class="fs-6 fw-bold">Aplikasi</span>
+        <span class="fs-6 fw-bold">Aplikasi Pekerjaan Rumah</span>
     </a>
     <hr class="my-2">
     <ul class="nav nav-pills flex-column mb-auto small">

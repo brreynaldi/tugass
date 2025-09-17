@@ -2,7 +2,7 @@
 @section('title', 'Dashboard Siswa')
 @section('content')
 <div class="container">
-    <h3 class="mb-4">Dashboard Siswa</h3>
+    <h3 class="mb-4">Dashboard Siswa SDN KAMPUNG BULAK 1</h3>
 
     <div class="row g-4">
 
