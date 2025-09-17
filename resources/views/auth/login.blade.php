@@ -67,9 +67,7 @@
                     </form>
                 </div>
 
-                <div class="card-footer text-center">
-                    <small class="text-muted">© {{ date('Y') }} {{ config('app.name') }}</small>
-                </div>
+                
             </div>
         </div>
     </div>
