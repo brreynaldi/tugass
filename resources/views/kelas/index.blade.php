@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Daftar Kelas')
 @section('content')
 <h3>Daftar Kelas</h3>
 <div>

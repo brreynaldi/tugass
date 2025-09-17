@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Dashboard Wali')
 @section('content')
 <div class="container">
     <h2>Dashboard Wali</h2>

@@ -1,6 +1,8 @@
 @extends('layouts.app')
-
+@section('title', 'Chat Bimbingan')
 @section('content')
+
+    <title>{{ config('app.name', 'Aplikasi Tugas') }}</title>
 <div class="container">
     <div>
         <button onclick="history.back()" class="btn btn-outline-primary">
