@@ -90,6 +90,39 @@
             top: 2px;
             right: 2px;
         }
+        .notification-text {
+            font-size: 14px;
+            color: #333;
+        }
+        .notification-message {
+            font-size: 14px;
+            color: #333;
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+        /* Efek shake untuk ikon notifikasi */
+        .bi-bell-fill {
+            transition: transform 0.2s ease;
+        }
+        .bi-bell-fill.shake {
+            animation: shake 0.4s;
+        }
+        @keyframes shake {
+            0% { transform: rotate(0); }
+            25% { transform: rotate(-15deg); }
+            50% { transform: rotate(15deg); }
+            75% { transform: rotate(-10deg); }
+            100% { transform: rotate(0); }
+        }
+        .notif-badge {
+            font-size: 10px;
+            padding: 2px 5px;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+        }
         .dropdown-menu {
             max-height: 400px;
             overflow-y: auto;
