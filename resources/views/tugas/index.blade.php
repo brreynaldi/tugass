@@ -24,6 +24,7 @@
             <tr>
                 <th>Judul</th>
                 <th>Kelas</th>
+                <th>Tanggal Deadline Tugas</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@
                 <tr>
                     <td>{{ $item->judul }}</td>
                     <td>{{ $item->kelas->nama ?? '-' }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->kelas->tanggal_deadline)->format('d F Y') }}</td>
                     <td>
                         @if(Auth::user()->role == 'guru')
                             <a href="{{ route('tugas.show', $item->id) }}" class="btn btn-sm btn-info">Lihat</a>

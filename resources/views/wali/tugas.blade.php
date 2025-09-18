@@ -9,6 +9,7 @@
             <tr>
                 <th>Judul Tugas</th>
                 <th>Deskripsi</th>
+                <th>Deadline Tugas</th>
                 <th>Jawaban</th>
                 <th>Nilai</th>
             </tr>
@@ -18,6 +19,7 @@
                     <tr>
                         <td>{{ $t->judul }}</td>
                         <td>{{ $t->deskripsi }}</td>
+                        <td>{{ \Carbon\Carbon::parse($t->tanggal_deadline)->format('d F Y') }}</td>
                         <td>
                             @if(isset($jawaban[$t->id]))
                                 
