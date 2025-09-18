@@ -9,13 +9,45 @@
         background-size: cover;
         min-height: 100vh;
     }
+
+    .login-logo {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    /* Responsif untuk tablet */
+    @media (max-width: 768px) {
+        .login-logo {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    /* Responsif untuk HP */
+    @media (max-width: 480px) {
+        .login-logo {
+            width: 100px;
+            height: 100px;
+        }
+    }
 </style>
 
 <div class="container">
+    
     <div class="row justify-content-center align-items-center" style="min-height: 100vh;">
+        
         <div class="col-md-6">
+            <img src="{{ asset('images/logo.jpg') }}" alt="Logo" width="100" class="login-logo">
+                <br/>
             <div class="card shadow-lg border-0 rounded-3">
+                
                 <div class="card-header text-center bg-primary text-white">
+                    
                     <h4 class="mb-0">{{ __('Login') }}</h4>
                 </div>
 
