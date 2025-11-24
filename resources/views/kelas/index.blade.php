@@ -10,6 +10,8 @@
     <br/>
      @if(Auth::user()->role == 'guru')
 <a href="{{ route('kelas.create') }}" class="btn btn-primary mb-3">+ Tambah Kelas</a>
+@elseif(Auth::user()->role == 'admin')
+<a href="{{ route('kelas.create') }}" class="btn btn-primary mb-3">+ Tambah Kelas</a>
 @endif
 <table class="table table-bordered">
     <thead>

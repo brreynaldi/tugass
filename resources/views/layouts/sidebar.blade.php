@@ -11,6 +11,12 @@
                 <span class="link-text">Pengguna</span>
             </a>
         </li>
+         <li>
+            <a href="{{ route('tugas.index') }}" class="nav-link {{ request()->is('tugas*') ? 'active' : 'text-white' }}">
+                <i class="bi bi-list-check"></i>
+                <span class="link-text">Tugas</span>
+            </a>
+        </li>
         <li>
             <a href="{{ route('kelas.index') }}" class="nav-link {{ request()->is('kelas*') ? 'active' : 'text-white' }}">
                 <i class="bi bi-journal-bookmark-fill"></i>

@@ -18,6 +18,8 @@
         <a href="{{ route('tugas.create') }}" class="btn btn-primary mb-3">+ Buat Tugas</a>
         <a href="{{ route('tugas.export.semua') }}" class="btn btn-success mb-3">📤 Export Semua Nilai</a>
 
+    @elseif(Auth::user()->role == 'admin')
+    <a href="{{ route('tugas.export.semua') }}" class="btn btn-success mb-3">📤 Export Semua Nilai</a>
     @endif
     <table class="table table-bordered">
         <thead>
@@ -25,7 +27,9 @@
                 <th>Judul</th>
                 <th>Kelas</th>
                 <th>Tanggal Deadline Tugas</th>
-                <th>Aksi</th>
+                @if(auth()->user()->role === 'guru' || auth()->user()->role === 'siswa')
+                <th>Aksi </th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -34,6 +38,7 @@
                     <td>{{ $item->judul }}</td>
                     <td>{{ $item->kelas->nama ?? '-' }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tanggal_deadline)->format('d F Y') }}</td>
+                    @if(auth()->user()->role === 'guru' || auth()->user()->role === 'siswa')
                     <td>
                         @if(Auth::user()->role == 'guru')
                             <a href="{{ route('tugas.show', $item->id) }}" class="btn btn-sm btn-info">Lihat</a>
@@ -42,10 +47,13 @@
                                 @method('DELETE')
                                 <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus Tugas Ini?')">Hapus</button>
                             </form>
+                           
+                       
                         @elseif(Auth::user()->role == 'siswa')
                             <a href="{{ route('siswa.tugas.show', $item->id) }}" class="btn btn-sm btn-info">Lihat</a>
                         @endif
                     </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

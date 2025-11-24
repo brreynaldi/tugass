@@ -75,7 +75,8 @@
     </div>
 
     <!-- Tambah Siswa -->
-    @if(Auth::check() && Auth::user()->role === 'guru')
+     
+     @if(auth()->user()->role === 'guru' || auth()->user()->role === 'admin')
     <div class="card shadow-sm border-0 rounded-3">
         <div class="card-header text-white rounded-top-3" style="background: linear-gradient(90deg, #198754, #20c997);">
             <h5 class="mb-0"><i class="bi bi-person-plus-fill me-2"></i>Tambah Siswa ke Kelas</h5>
